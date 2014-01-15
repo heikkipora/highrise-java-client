@@ -34,9 +34,9 @@ public class Contact {
         public EmailAddress() {
         }
 
-        public EmailAddress(String location, String address) {
-            this.location = location;
+        public EmailAddress(String address, String location) {
             this.address = address;
+            this.location = location;
         }
     }
 

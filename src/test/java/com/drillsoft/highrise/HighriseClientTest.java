@@ -102,7 +102,7 @@ public class HighriseClientTest {
         Person newPerson = new Person();
         newPerson.firstName = FIRSTNAME;
         newPerson.lastName = LASTNAME;
-        newPerson.contact.emailAddresses = of(new EmailAddress("Work", EMAIL));
+        newPerson.contact.emailAddresses = of(new EmailAddress(EMAIL, "Work"));
         person = client.create(newPerson);
         tag = client.tag(person, TAG);
     }
