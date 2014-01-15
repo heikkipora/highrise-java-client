@@ -6,7 +6,6 @@ import com.drillsoft.highrise.domain.People;
 import com.drillsoft.highrise.domain.Person;
 import com.drillsoft.highrise.domain.Tag;
 import org.glassfish.jersey.client.ClientConfig;
-import org.glassfish.jersey.filter.LoggingFilter;
 import org.glassfish.jersey.media.multipart.FormDataMultiPart;
 import org.glassfish.jersey.media.multipart.MultiPartFeature;
 import org.glassfish.jersey.media.multipart.file.FileDataBodyPart;
@@ -16,7 +15,6 @@ import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.WebTarget;
 import java.io.File;
 import java.util.List;
-import java.util.logging.Logger;
 
 import static javax.ws.rs.client.Entity.entity;
 import static javax.ws.rs.core.MediaType.APPLICATION_XML_TYPE;
@@ -24,13 +22,11 @@ import static org.glassfish.jersey.client.authentication.HttpAuthenticationFeatu
 
 public class HighriseClient {
     private final WebTarget highrise;
-    private final Logger log = Logger.getLogger(HighriseClient.class.getName());
 
     public HighriseClient(String highriseRootUrl, String authenticationToken) {
         Client client = ClientBuilder.newClient(new ClientConfig()
                 .register(basic(authenticationToken, "notneeded"))
-                .register(MultiPartFeature.class)
-                .register(new LoggingFilter(log, true)));
+                .register(MultiPartFeature.class));
         highrise = client.target(highriseRootUrl);
     }
 
