@@ -32,6 +32,14 @@ public class HighriseClient {
         return highrise.path("people.xml").request(APPLICATION_XML_TYPE).get(People.class).persons;
     }
 
+    public List<Person> searchPeopleByName(String name) {
+        return highrise.path("people/search.xml").queryParam("term", name).request(APPLICATION_XML_TYPE).get(People.class).persons;
+    }
+
+    public List<Person> searchPeopleByEmail(String email) {
+        return highrise.path("people/search.xml").queryParam("criteria[email]", email).request(APPLICATION_XML_TYPE).get(People.class).persons;
+    }
+
     public Person person(Integer id) {
         return highrise.path("people/" + id + ".xml").request(APPLICATION_XML_TYPE).get(Person.class);
     }

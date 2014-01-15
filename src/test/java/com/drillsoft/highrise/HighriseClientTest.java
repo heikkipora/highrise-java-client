@@ -6,6 +6,8 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import java.util.List;
+
 import static com.drillsoft.highrise.domain.Contact.EmailAddress;
 import static com.google.common.collect.ImmutableList.of;
 import static java.lang.System.getProperty;
@@ -51,6 +53,29 @@ public class HighriseClientTest {
         assertEquals(person.id, created.id);
         assertEquals(TAG, created.tags.get(0).name);
         assertEquals(EMAIL, created.contact.emailAddresses.get(0).address);
+    }
+
+    @Test
+    public void searchByEmailReturnsTestPerson() throws Exception {
+        List<Person> people = client.searchPeopleByEmail(EMAIL);
+        assertReturnsTestPerson(people);
+    }
+
+    @Test
+    public void searchByNameReturnsTestPerson() throws Exception {
+        List<Person> people = client.searchPeopleByName(NAME);
+        assertReturnsTestPerson(people);
+    }
+
+    @Test
+    public void searchByNonExistingEmailReturnsEmptyList() throws Exception {
+        List<Person> people = client.searchPeopleByEmail("invalid-email-address");
+        assertEquals(0, people.size());
+    }
+
+    private void assertReturnsTestPerson(List<Person> people) {
+        assertEquals(1, people.size());
+        assertEquals(person.id, people.get(0).id);
     }
 
     private static void createTestPerson() {
