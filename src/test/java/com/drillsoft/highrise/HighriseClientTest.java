@@ -1,17 +1,21 @@
 package com.drillsoft.highrise;
 
+import com.drillsoft.highrise.domain.Note;
 import com.drillsoft.highrise.domain.Person;
 import com.drillsoft.highrise.domain.Tag;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import java.io.File;
+import java.net.URISyntaxException;
 import java.util.List;
 
 import static com.drillsoft.highrise.domain.Contact.EmailAddress;
 import static com.google.common.collect.ImmutableList.of;
 import static java.lang.System.getProperty;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 /*
@@ -71,6 +75,22 @@ public class HighriseClientTest {
     public void searchByNonExistingEmailReturnsEmptyList() throws Exception {
         List<Person> people = client.searchPeopleByEmail("invalid-email-address");
         assertEquals(0, people.size());
+    }
+
+    @Test
+    public void addNoteForTestPerson() throws Exception {
+        Note created = client.addNote(person, "Note");
+        assertEquals("Note", created.body);
+    }
+
+    @Test
+    public void addNoteWithAttachmentForTestPerson() throws Exception {
+        Note created = client.addAttachments(person, of(filePath("/kitten.jpg")));
+        assertNotNull(created); // free highrise instances dont add attachments for real
+    }
+
+    private File filePath(String resourceName) throws URISyntaxException {
+        return new File(getClass().getResource(resourceName).toURI());
     }
 
     private void assertReturnsTestPerson(List<Person> people) {
