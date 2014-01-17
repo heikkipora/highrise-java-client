@@ -6,6 +6,7 @@ import com.drillsoft.highrise.domain.People;
 import com.drillsoft.highrise.domain.Person;
 import com.drillsoft.highrise.domain.Tag;
 import org.glassfish.jersey.client.ClientConfig;
+import org.glassfish.jersey.client.filter.HttpBasicAuthFilter;
 import org.glassfish.jersey.media.multipart.FormDataMultiPart;
 import org.glassfish.jersey.media.multipart.MultiPartFeature;
 import org.glassfish.jersey.media.multipart.file.FileDataBodyPart;
@@ -18,14 +19,13 @@ import java.util.List;
 
 import static javax.ws.rs.client.Entity.entity;
 import static javax.ws.rs.core.MediaType.APPLICATION_XML_TYPE;
-import static org.glassfish.jersey.client.authentication.HttpAuthenticationFeature.basic;
 
 public class HighriseClient {
     private final WebTarget highrise;
 
     public HighriseClient(String highriseRootUrl, String authenticationToken) {
         Client client = ClientBuilder.newClient(new ClientConfig()
-                .register(basic(authenticationToken, "notneeded"))
+                .register(new HttpBasicAuthFilter(authenticationToken, "notneeded"))
                 .register(MultiPartFeature.class));
         highrise = client.target(highriseRootUrl);
     }
