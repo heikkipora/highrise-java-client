@@ -19,6 +19,8 @@ import java.util.List;
 
 import static javax.ws.rs.client.Entity.entity;
 import static javax.ws.rs.core.MediaType.APPLICATION_XML_TYPE;
+import static org.glassfish.jersey.client.ClientProperties.CONNECT_TIMEOUT;
+import static org.glassfish.jersey.client.ClientProperties.READ_TIMEOUT;
 
 public class HighriseClient {
     private final WebTarget highrise;
@@ -27,6 +29,8 @@ public class HighriseClient {
         Client client = ClientBuilder.newClient(new ClientConfig()
                 .register(new HttpBasicAuthFilter(authenticationToken, "notneeded"))
                 .register(MultiPartFeature.class));
+        client.property(CONNECT_TIMEOUT, 10000);
+        client.property(READ_TIMEOUT, 30000);
         highrise = client.target(highriseRootUrl);
     }
 
